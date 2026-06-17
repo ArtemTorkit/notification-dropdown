@@ -201,17 +201,6 @@ Bell badge updates with new unread count
 - Hover effects and transitions
 - Accessibility features (ARIA labels)
 
-### 🔮 Potential Enhancements
-
-- Individual mark-as-read on notification click
-- Outside-click-to-close dropdown
-- Keyboard navigation (Escape to close, Tab to navigate)
-- Avatar image support
-- localStorage persistence
-- Notification delete action
-- Toast notifications for actions
-- Infinite scroll for large lists
-
 ## 💡 Design Decisions
 
 ### Why Container/Presenter Pattern?
@@ -234,41 +223,3 @@ Provides flexibility while maintaining consistent styling. Consumers can compose
 
 Prevents recalculating the filtered list on every render, which matters as the notification list grows.
 
-## 🧪 Testing Considerations
-
-This implementation is structured for testability:
-
-```tsx
-// NotificationDropdownContainer can be tested independently
-- Test state updates
-- Test filtering logic
-- Test handler behavior
-
-// NotificationPresenter can be tested independently
-- Test toggle behavior
-- Mock Container/Dropdown props
-
-// Individual components can be tested with mocked data
-- Test rendering with different prop combinations
-- Test loading/error/empty states
-```
-
-## 📝 Notes
-
-- Mock data is in `constants/notifications.ts` - replace with real API calls by modifying the useEffect in NotificationDropdownContainer
-- The 1-second delay in data loading simulates a real network request
-- All styling uses Tailwind CSS classes - customize in `tailwind.config.ts`
-- ESLint config follows React best practices
-
-## 🤝 Contributing
-
-To extend this component:
-
-1. Add new features to NotificationDropdownContainer (state/logic)
-2. Update NotificationPresenter if needed (UI orchestration)
-3. Modify NotificationDropdown for UI changes
-4. Keep individual components focused and single-responsibility
-
-## 📄 License
-
-This project is part of the MindPal Recruitment Task.
