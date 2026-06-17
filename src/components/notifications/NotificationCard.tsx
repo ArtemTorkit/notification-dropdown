@@ -1,6 +1,6 @@
-import type { Notification } from '../../types/notifications';
+import type { Notification } from "../../types/notifications";
 
-const NotificationCard = ({notification}: {notification: Notification}) => {
+const NotificationCard = ({ notification }: { notification: Notification }) => {
   return (
     <div
       key={notification.id}
@@ -8,9 +8,19 @@ const NotificationCard = ({notification}: {notification: Notification}) => {
         !notification.viewed ? "bg-blue-50/30" : ""
       }`}
     >
-      <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-semibold text-xs text-gray-700 shrink-0">
-        {notification.sender.name.charAt(0)}
-      </div>
+      {notification.sender.avatarUrl ? (
+        <div className="w-8 h-8 shrink-0 overflow-hidden rounded-full">
+          <img
+            className="w-full h-full object-cover"
+            alt="Avatar"
+            src={notification.sender.avatarUrl}
+          />
+        </div>
+      ) : (
+        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center font-semibold text-xs text-gray-700 shrink-0">
+          {notification.sender.name.charAt(0)}
+        </div>
+      )}
 
       <div className="flex-1 text-xs text-gray-600">
         <span className="font-semibold text-gray-900 block mb-0.5">
@@ -24,6 +34,6 @@ const NotificationCard = ({notification}: {notification: Notification}) => {
       )}
     </div>
   );
-}
+};
 
-export default NotificationCard
+export default NotificationCard;

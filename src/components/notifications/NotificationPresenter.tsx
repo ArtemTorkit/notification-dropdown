@@ -1,6 +1,8 @@
+import { useRef } from "react";
 import type { Notification } from "../../types/notifications";
 import NotificationBell from "./NotificationBell";
 import { useToggle } from "../../hooks/useToggle";
+import { useClickOutside } from "../../hooks/useClickOutside";
 import NotificationDropdown from "./NotificationDropdown";
 
 interface NotificationPresenterProps {
@@ -22,8 +24,16 @@ const NotificationPresenter = ({
 }: NotificationPresenterProps) => {
   const [isOpen, toggle] = useToggle(false);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useClickOutside(containerRef, () => {
+    if (isOpen) {
+      toggle();
+    }
+  });
+
   return (
-    <div className="">
+    <div ref={containerRef} className="relative inline-block">
       <NotificationBell count={unreadCount} onClick={toggle} />
 
       {isOpen && (

@@ -21,7 +21,7 @@ const NotificationDropdown = ({
   onReadNotifications,
 }: NotificationDropdownProps) => {
   return (
-    <div className="absolute right-0 mt-2 pr-6 w-80 z-50">
+    <div className="fixed sm:absolute top-[64px] sm:top-full left-4 sm:left-auto right-4 sm:right-0 mt-2 w-auto sm:w-80 z-50">
       <Card>
         <Card.Header>
           <Card.Title>Notifications</Card.Title>
