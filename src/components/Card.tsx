@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react'
+import type { ReactNode } from 'react'
 
 interface CardProps {
   children: ReactNode
@@ -50,9 +50,11 @@ const CardFooter = ({ children, className = '' }: CardSectionProps) => {
   )
 }
 
-export const Card = Object.assign(CardRoot, {
+const Card = Object.assign(CardRoot, {
   Header: CardHeader,
   Title: CardTitle,
   Body: CardBody,
   Footer: CardFooter,
 })
+
+export { Card }

@@ -1,11 +1,15 @@
-import { useState } from 'react'
+import { useState, useCallback } from "react";
 
-export const useToggle = (initialValue = false) => {
-    const [state, setState] = useState(initialValue)
+/**
+ * A custom hook to manage a boolean toggle state.
+ * Uses a const tuple assertion to lock in exactly [boolean, () => void] array types.
+ */
+export const useToggle = (initialValue: boolean = false) => {
+  const [state, setState] = useState<boolean>(initialValue);
 
-    const toggle = () => {
-        setState(prev=>!prev)
-    }
+  const toggle = useCallback(() => {
+    setState((prev) => !prev);
+  }, []);
 
-    return [state, toggle]
-}
+  return [state, toggle] as const;
+};

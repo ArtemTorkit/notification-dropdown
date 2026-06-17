@@ -1,12 +1,15 @@
 import { Card } from "../Card";
 import type { Notification } from "../../types/notifications";
 import NotificationCard from "./NotificationCard";
+import NotificationFilters from "./NotificationFilters";
 
 interface NotificationDropdownProps {
   unreadCount: number;
   notifications: Notification[];
   loading: boolean;
   error: string | null;
+  onToggleFilter: () => void;
+  onReadNotifications: () => void;
 }
 
 const NotificationDropdown = ({
@@ -14,7 +17,9 @@ const NotificationDropdown = ({
   loading,
   error,
   notifications,
-} : NotificationDropdownProps) => {
+  onToggleFilter,
+  onReadNotifications,
+}: NotificationDropdownProps) => {
   return (
     <div className="absolute right-0 mt-2 pr-6 w-80 z-50">
       <Card>
@@ -27,32 +32,41 @@ const NotificationDropdown = ({
           )}
         </Card.Header>
 
-        <Card.Body className="max-h-64 overflow-y-auto divide-y divide-gray-50 p-0">
-          {loading && (
-            <div className="p-4 text-center text-gray-400 text-sm">
-              Loading updates...
-            </div>
-          )}
+        <Card.Body>
+          <NotificationFilters onToggleFilter={onToggleFilter} />
 
-          {error && (
-            <div className="p-4 text-center text-red-500 text-sm">{error}</div>
-          )}
+          <div className="max-h-64 overflow-y-auto divide-y divide-gray-50 p-0">
+            {loading && (
+              <div className="p-4 text-center text-gray-400 text-sm">
+                Loading updates...
+              </div>
+            )}
 
-          {!loading && !error && notifications.length === 0 && (
-            <div className="p-4 text-center text-gray-400 text-sm">
-              All caught up!
-            </div>
-          )}
+            {error && (
+              <div className="p-4 text-center text-red-500 text-sm">
+                {error}
+              </div>
+            )}
 
-          {!loading &&
-            !error &&
-            notifications.map((n) => (
-              <NotificationCard key={n.id} notification={n}/>
-            ))}
+            {!loading && !error && notifications.length === 0 && (
+              <div className="p-4 text-center text-gray-400 text-sm">
+                All caught up!
+              </div>
+            )}
+
+            {!loading &&
+              !error &&
+              notifications.map((n) => (
+                <NotificationCard key={n.id} notification={n} />
+              ))}
+          </div>
         </Card.Body>
 
         <Card.Footer>
-          <button className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors py-0.5">
+          <button
+            className="text-xs font-medium text-blue-600 hover:text-blue-700 transition-colors py-0.5 cursor-pointer"
+            onClick={onReadNotifications}
+          >
             Mark all as read
           </button>
         </Card.Footer>

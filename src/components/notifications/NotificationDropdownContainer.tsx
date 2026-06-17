@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 import { MOCKED_NOTIFICATIONS } from "../../constants/notifications"
 import NotificationPresenter from "./NotificationPresenter"
 import type { Notification } from "../../types/notifications"
+import { useToggle } from "../../hooks/useToggle"
 
 const NotificationDropdownContainer = () => {
   const [notifications, setNotifications] = useState<Notification[]>([])
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
+  
+  const [showUnreadOnly, toggleShowUnreadOnly] = useToggle(false);
 
   useEffect(() => {
-    setLoading(true)
-    setError(null)
-
     const timer = setTimeout(() => {
       try {
         if (!MOCKED_NOTIFICATIONS) {
@@ -33,13 +33,37 @@ const NotificationDropdownContainer = () => {
     return () => clearTimeout(timer)
   }, [])
 
+  const handleMarkAllAsRead = useCallback(() => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.map((notification) => ({
+        ...notification,
+        viewed: true,
+      })),
+    )
+  }, []);
+
+  const filteredNotifications = useMemo(() => {
+    // If the filter is off, return all notifications immediately
+    if (!showUnreadOnly) return notifications;
+
+    // Otherwise, return only items where viewed is false
+    return notifications.filter((notification) => !notification.viewed);
+  }, [notifications, showUnreadOnly]);
+
+  const unreadCount = notifications.filter(
+    (notification) => !notification.viewed,
+  ).length;
+
   return (
-    <NotificationPresenter 
-      notifications={notifications}
+    <NotificationPresenter
+      notifications={filteredNotifications}
       loading={loading}
       error={error}
+      unreadCount={unreadCount}
+      onToggleFilter={toggleShowUnreadOnly}
+      onReadNotifications={handleMarkAllAsRead}
     />
-  )
+  );
 }
 
 export default NotificationDropdownContainer
